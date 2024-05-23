@@ -1,90 +1,44 @@
 "use client";
-
-import { Card, CardContent } from "@/components/ui/card";
-
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
-
-import {
-	Carousel,
-	CarouselContent,
-	CarouselItem,
-	CarouselNext,
-	CarouselPrevious,
-} from "@/components/ui/carousel";
+import { useEffect, useState } from "react";
+import "../globals.css";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+	const router = useRouter();
+	const [countdown, setCountdown] = useState(5);
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			if (countdown > 0) {
+				setCountdown((prevCountdown) => prevCountdown - 1);
+			} else {
+				router.push("links/1");
+			}
+		}, 1000);
+
+		return () => clearTimeout(timer);
+	}, [countdown, router]);
+	const goBack = () => {
+		router.push("links/1");
+	};
 	return (
-		<div className="max-w-7xl md:px-4 py-52 mx-auto h-screen">
-			<Carousel orientation="vertical | horizontal">
-				<CarouselContent className="px-10 py-10 md:px-72">
-					<CarouselItem>
-						<Card className="h-fit bg-transparent border-none">
-							<CardContent>
-								<Dialog>
-									<div className="group relative block h-64 sm:h-80 lg:h-96">
-										<span className="absolute inset-0 border-2 border-dashed border-white"></span>
-
-										<div className="relative flex h-full transform items-end border-2 border-black bg-white transition-transform group-hover:-translate-x-2 group-hover:-translate-y-2">
-											<div className="p-4 !pt-0 transition-opacity group-hover:absolute group-hover:opacity-0 sm:p-6 lg:p-8">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													className="size-10 sm:size-12"
-													fill="none"
-													viewBox="0 0 24 24"
-													stroke="currentColor"
-												>
-													<path
-														strokeLinecap="round"
-														strokeLinejoin="round"
-														strokeWidth="2"
-														d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-													/>
-												</svg>
-
-												<h2 className="mt-4 text-xl font-medium sm:text-2xl">
-													Go around the world111
-												</h2>
-											</div>
-
-											<div className="absolute p-4 opacity-0 transition-opacity group-hover:relative group-hover:opacity-100 sm:p-6 lg:p-8">
-												<h3 className="text-xl font-medium sm:text-2xl">
-													Go around the world
-												</h3>
-
-												<p className="mt-4 text-sm sm:text-base">
-													Lorem ipsum dolor sit amet consectetur adipisicing elit.
-													Cupiditate, praesentium voluptatem omnis atque culpa repellendus.
-												</p>
-												<DialogTrigger className="w-full">
-													<p className="mt-8 font-bold">Know more</p>
-												</DialogTrigger>
-											</div>
-										</div>
-									</div>
-									<DialogContent>
-										<DialogHeader>
-											<DialogTitle>Are you absolutely sure?</DialogTitle>
-											<DialogDescription>
-												This action cannot be undone. This will permanently delete your
-												account and remove your data from our servers.
-											</DialogDescription>
-										</DialogHeader>
-									</DialogContent>
-								</Dialog>
-							</CardContent>
-						</Card>
-					</CarouselItem>
-				</CarouselContent>
-				<CarouselPrevious />
-				<CarouselNext />
-			</Carousel>
+		<div className="grid h-screen place-content-center px-4">
+			<div className="text-center">
+				<h1 className="text-9xl font-black text-gray-200">404</h1>
+				<h1 className="mt-6 text-2xl font-bold tracking-tight text-gray-300 sm:text-4xl">
+					Nuh Uh!
+				</h1>
+				<p className="my-4 text-gray-500">We can{"'"}t find that page.</p>
+				<button
+					className="group relative inline-block focus:outline-none focus:ring"
+					onClick={goBack}
+				>
+					<span className="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-yellow-300 transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></span>
+					<span className="relative inline-block border-2 border-current px-8 py-3 text-sm font-bold uppercase tracking-widest text-black group-active:text-opacity-75">
+						{countdown > 0 ? `Redirect in ${countdown} seconds` : "Let's Gooo"}
+					</span>
+				</button>
+			</div>
 		</div>
 	);
 }
