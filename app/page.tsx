@@ -5,10 +5,10 @@ import Link from "next/link";
 export default function Home() {
 	return (
 		<>
-			<div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
+			<div className="mx-auto max-w-screen-xl px-4 py-32 flex h-screen items-center">
 				<div className="mx-auto max-w-xl text-center">
 					<h1 className="text-3xl font-extrabold sm:text-5xl text-white">
-						Visit the Apizu website
+						Visit the Apizu website <br />
 						<strong className="font-extrabold text-red-700 sm:block">
 							Here is the link to share.
 						</strong>

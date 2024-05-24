@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from 'sonner'
-
+import { Toaster } from "sonner";
+import bg from "@/utils/bg.svg";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,7 +19,17 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<Toaster richColors />
-				<div className="bg-black min-h-screen">{children}</div>
+				<div
+					className="bg-neutral-900 min-h-screen"
+					style={{
+						backgroundImage: `url(${bg.src})`,
+						backgroundSize: "cover",
+						backgroundPosition: "center",
+						backgroundRepeat: "no-repeat",
+					}}
+				>
+					{children}
+				</div>
 			</body>
 		</html>
 	);

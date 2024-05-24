@@ -14,10 +14,10 @@ export const QRCodeComponent: React.FC<QRCodeProps> = ({ url }) => {
 				errorCorrectionLevel: "M",
 				margin: 3,
 				scale: 4,
-				width: 400,
+				width: 350,
 				color: {
-					dark: "#010599FF",
-					light: "#FFBF60FF",
+					dark: "#09090b",
+					light: "#ffffff",
 				},
 			}}
 		/>
