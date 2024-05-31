@@ -101,7 +101,7 @@ export default function Page({ params }: { params: { linkId: string } }) {
 	const getRandomImage = () => images[Math.floor(Math.random() * images.length)];
 
 	return (
-		<div className="max-w-7xl py-52 mx-auto h-screen">
+		<div className="max-w-7xl py-24 md:py-52 mx-auto min-h-screen">
 			<Button
 				variant="ghost"
 				onClick={() => router.push("/")}
