@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { QRCodeComponent } from "@/components/qr-code";
 import Link from "next/link";
+import { toast } from "sonner";
 
 interface Link {
 	name: string;
@@ -33,6 +34,7 @@ interface Link {
 
 export default function Page({ params }: { params: { linkId: string } }) {
 	const [link, setLink] = useState<Link | null>(null);
+	const [idList, setIdList] = useState<number[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
 	const currentLinkId = parseInt(params.linkId);
@@ -46,13 +48,13 @@ export default function Page({ params }: { params: { linkId: string } }) {
 					.eq("id", currentLinkId);
 
 				if (error) {
-					console.error("Failed to fetch data:", error.message);
+					toast.error("Failed to fetch data");
 					setLink(null);
 				} else {
 					setLink(data.length > 0 ? data[0] : null);
 				}
 			} catch (error) {
-				console.error("Error fetching data:", error);
+				toast.error("Error fetching data");
 				setLink(null);
 			} finally {
 				setTimeout(() => {
@@ -60,8 +62,24 @@ export default function Page({ params }: { params: { linkId: string } }) {
 				}, 1000);
 			}
 		};
+		const fetchDataID = async () => {
+			try {
+				const { data, error } = await supabase.from("link-website").select("id");
+
+				if (error) {
+					toast.error("Error fetching IDs",);
+					setIdList([]);
+				} else {
+					setIdList(data.map((item: { id: number }) => item.id));
+				}
+			} catch (error) {
+				toast.error("Error fetching IDs");
+				setIdList([]);
+			}
+		};
 
 		fetchData();
+		fetchDataID();
 	}, [currentLinkId]);
 
 	if (isLoading) {
@@ -81,15 +99,18 @@ export default function Page({ params }: { params: { linkId: string } }) {
 	}
 
 	const handlePrevious = () => {
-		if (currentLinkId > 1) {
-			router.push(`/links/${currentLinkId - 1}`);
+		const currentIndex = idList.indexOf(currentLinkId);
+		if (currentIndex > 0) {
+			router.push(`/links/${idList[currentIndex - 1]}`);
 		}
 	};
 
 	const handleNext = () => {
-		router.push(`/links/${currentLinkId + 1}`);
+		const currentIndex = idList.indexOf(currentLinkId);
+		if (currentIndex < idList.length - 1) {
+			router.push(`/links/${idList[currentIndex + 1]}`);
+		}
 	};
-
 	const images = [
 		"https://i.pinimg.com/originals/26/45/47/2645475a9eef90f4a1fe67b76ae7d9fa.gif",
 		"https://i.pinimg.com/originals/24/2e/37/242e379f970c22bf30e1689290627058.gif",
@@ -112,7 +133,7 @@ export default function Page({ params }: { params: { linkId: string } }) {
 			</Button>
 			<Button
 				variant="ghost"
-				onClick={() => router.push("/addData")}
+				onClick={() => router.push("/links/addData")}
 				className="absolute top-8 right-4 text-white px-2.5 py-4 rounded-md"
 			>
 				<VenetianMask className="w-8 h-8" />
