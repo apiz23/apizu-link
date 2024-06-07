@@ -20,6 +20,7 @@ import {
 	Code,
 	ExternalLink,
 	QrCode,
+	VenetianMask,
 } from "lucide-react";
 import { QRCodeComponent } from "@/components/qr-code";
 import Link from "next/link";
@@ -101,13 +102,20 @@ export default function Page({ params }: { params: { linkId: string } }) {
 	const getRandomImage = () => images[Math.floor(Math.random() * images.length)];
 
 	return (
-		<div className="max-w-7xl py-24 md:py-52 mx-auto min-h-screen">
+		<div className="max-w-7xl py-36 md:py-52 mx-auto min-h-screen">
 			<Button
 				variant="ghost"
 				onClick={() => router.push("/")}
 				className="absolute top-8 left-4 text-white px-2.5 py-4 rounded-md"
 			>
 				<ArrowBigLeftIcon className="w-8 h-8" />
+			</Button>
+			<Button
+				variant="ghost"
+				onClick={() => router.push("/addData")}
+				className="absolute top-8 right-4 text-white px-2.5 py-4 rounded-md"
+			>
+				<VenetianMask className="w-8 h-8" />
 			</Button>
 			<div className="grid grid-cols-1">
 				<Button onClick={handlePrevious} className="w-fit mx-auto bg-transparent">
