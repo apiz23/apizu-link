@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import supabase from "@/lib/supabase";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -24,23 +23,31 @@ export default function Page() {
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
-		const { data, error } = await supabase
-			.from("link-website")
-			.insert([
-				{
+		try {
+			const response = await fetch("/api/link", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
 					name: formData.name,
 					description: formData.description,
 					link: formData.url,
-				},
-			])
-			.select();
+				}),
+			});
 
-		if (error) {
-			toast.error("error insert");
-		} else {
+			if (!response.ok) {
+				throw new Error("Network response was not ok");
+			}
+
+			const data = await response.json();
 			toast.success("Success");
+		} catch (error) {
+			console.error("Error inserting data:", error);
+			toast.error("Error inserting data");
 		}
 	};
+
 	return (
 		<div className="max-w-2xl py-36 md:py-52 mx-auto min-h-screen">
 			<form onSubmit={handleSubmit}>
