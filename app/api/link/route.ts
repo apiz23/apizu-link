@@ -47,3 +47,30 @@ export async function POST(req: NextRequest) {
 		return NextResponse.json({ error: error.message }, { status: 500 });
 	}
 }
+
+export async function DELETE(req: NextRequest) {
+	try {
+		const { id } = await req.json();
+		const apiUrl = process.env.API_URL;
+		if (!apiUrl) {
+			throw new Error("API_URL is not defined in environment variables.");
+		}
+
+		const deleteUrl = `${apiUrl}/${id}`;
+		const response = await fetch(deleteUrl, {
+			method: "DELETE",
+		});
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		return NextResponse.json(
+			{ message: "Resource deleted successfully" },
+			{ status: 200 }
+		);
+	} catch (error: any) {
+		console.error("Error deleting data:", error);
+		return NextResponse.json({ error: error.message }, { status: 500 });
+	}
+}
